@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordPress Developer Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background-color: #0a0b10;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0b10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00f2fe;
+            border-radius: 10px;
+        }
+
+        /* Header / Navbar */
+        header {
+            background: rgba(10, 11, 16, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 242, 254, 0.05);
+            transition: all 0.4s ease;
+        }
+
+        header.scrolled {
+            background: rgba(6, 7, 10, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 242, 254, 0.2);
+            border-bottom: 1px solid rgba(0, 242, 254, 0.4);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .nav-and-profile {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #b0b3b8;
+            text-decoration: none;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #00f2fe;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #00f2fe;
+            box-shadow: 0 0 8px #00f2fe;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Profile Picture Circle (Header) */
+        .profile-container {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #00f2fe;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            background-color: #141621;
+            flex-shrink: 0;
+        }
+
+        .profile-container:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.8);
+            border-color: white;
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: radial-gradient(circle at center, rgba(79, 172, 254, 0.1) 0%, rgba(10, 11, 16, 1) 70%), 
+                        linear-gradient(rgba(10, 11, 16, 0.7), rgba(10, 11, 16, 0.95)), 
+                        url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 1.5rem;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+            line-height: 1.2;
+        }
+
+        .hero-content h1 span {
+            background: linear-gradient(45deg, #00f2fe, #9b51e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            margin-bottom: 2.5rem;
+            max-width: 750px;
+            color: #b0b3b8;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            color: #0a0b10;
+            padding: 1rem 3rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+            transition: all 0.4s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 35px rgba(0, 242, 254, 0.8);
+            color: #fff;
+        }
+
+     .typing-heading {
+  font-family: space;
+  font-size: 2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px;  /* Cursor */
+  width: 0;
+  max-width: max-content; /* Title ko phailne se rokega */
+  animation: typing 4s steps(38) forwards, blink 0.75s step-end infinite;
+}
+
+.highlight {
+  color: #0073aa;
+}
+
+/* Typing & Cursor Blink */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 38ch; } /* Text ke hisab se fixed width */
+}
+
+
+
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2.2rem, 4vw, 3.2rem);
+            font-weight: 800;
+            margin-bottom: 4rem;
+            color: #fff;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #00f2fe;
+            box-shadow: 0 0 10px #00f2fe;
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+
+        /* WordPress Architecture Explain Section */
+        .wp-explain-section {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .wp-info-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: rgba(20, 22, 33, 0.4);
+            border-left: 4px solid #00f2fe;
+            padding: 1.5rem;
+            border-radius: 0 16px 16px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            background: rgba(20, 22, 33, 0.7);
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0, 242, 254, 0.1);
+        }
+
+        .info-card h4 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Glowing Profile Card Box (Right Side) */
+        .wp-profile-right {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .large-profile-circle {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #00f2fe;
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.4), inset 0 0 20px rgba(0, 242, 254, 0.2);
+            transition: all 0.5s ease;
+            background-color: #141621;
+            margin-bottom: 1.5rem;
+        }
+
+        .large-profile-circle:hover {
+            transform: scale(1.03) rotate(2deg);
+            box-shadow: 0 0 45px rgba(0, 242, 254, 0.8), 0 0 20px rgba(155, 81, 224, 0.4);
+            border-color: #fff;
+        }
+
+        .large-profile-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .profile-label {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .profile-sublabel {
+            font-size: 0.95rem;
+            color: #00f2fe;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-top: 0.2rem;
+        }
+
+        /* Skills/Expertise Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .skill-card {
+            background: rgba(20, 22, 33, 0.6);
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 242, 254, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 242, 254, 0.15);
+        }
+
+        .skill-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.4));
+        }
+
+        .skill-card h3 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .skill-card p {
+            color: #a0a5b0;
+            font-size: 0.95rem;
+        }
+
+        /* Gallery / Project Showcase */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            aspect-ratio: 16/10;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+            filter: brightness(0.7);
+        }
+
+        /* Footer Design */
+        footer {
+            background: #06070a;
+            border-top: 1px solid rgba(0, 242, 254, 0.2);
+            box-shadow: 0 -10px 30px rgba(0, 242, 254, 0.05);
+            padding: 4rem 2rem 2rem;
+            color: #a0a5b0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+        }
+
+        .footer-text {
+            max-width: 600px;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: #a0a5b0;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .footer-links a:hover {
+            color: #00f2fe;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%;
+            padding-top: 1.5rem;
+            color: #6c727f;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #00f2fe;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .wp-explain-section {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .wp-profile-right {
+                order: -1; /* Mobile view me pic upar aa jayegi */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 11, 16, 0.98);
+                border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                text-align: center;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero {
+                background-attachment: scroll;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">ABDUL SAMAD HUSSAIN BAIG</div>
+            
+            <div class="nav-and-profile">
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about-wp">About WP</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#portfolio">Projects</a></li>
+                    <li><a href="Hire Me.html">Hire Me</a></li>
+                </ul>
+                
+                <!-- Circle Profile Container (Verbatim image link) -->
+                <div class="profile-container" title="My Profile">
+                    <img src="BANNER1.jpg" alt="Developer Profile" class="profile-pic">
+                </div>
+
+                <div class="mobile-menu">☰</div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 class="typing-heading">
+            <span class="highlight">WordPress Developer</span> 
+            </h1>
+            <p>Hi, I craft high-performance, ultra-responsive, and completely customized WordPress websites using next-gen aesthetics and advanced elementor architecture.</p>
+            <a href="#portfolio" class="cta-button">View My Work</a>
+        </div>
+    </section>
+
+    <!-- WordPress Explanation Section with Large Profile Pic -->
+    <section class="container" id="about-wp">
+        <h2 class="section-title">What is WordPress & How It Works?</h2>
+        <div class="wp-explain-section">
+            
+            <!-- Left Side: Core Workings -->
+            <div class="wp-info-left">
+                <div class="info-card">
+                    <h4>🛠️ What is it?</h4>
+                    <p>WordPress ek powerful CMS (Content Management System) hai jo bina zyada code likhe complex aur modern websites banane ki sahulat deta hai. Internet ki 43%+ websites isi par chalti hain.</p>
+                </div>
+                <div class="info-card">
+                    <h4>🗄️ Database Driven</h4>
+                    <p>Yeh PHP aur MySQL par kaam karta hai. Aapka sara content, posts, aur settings ek secure database mein store hoti hain aur real-time mein load hoti hain.</p>
+                </div>
+                <div class="info-card">
+                    <h4>🔌 Themes & Plugins</h4>
+                    <p>Themes layout aur design handle karti hain, jabki Plugins naye features (jaise ecommerce, forms, neon systems) ko core code ko chhede bina add karte hain.</p>
+                </div>
+            </div>
+
+            <!-- Right Side: Beautiful Large Profile Image Card -->
+            <div class="wp-profile-right">
+                <div class="large-profile-circle">
+                    <img src="BANNER1.jpg" alt="Developer Portfolio Pic">
+                </div>
+                <div class="profile-label">WordPress Expert</div>
+                <div class="profile-sublabel">Full Stack Optimization</div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="container" id="skills">
+        <h2 class="section-title">Core Expertise</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div class="skill-icon">🌐</div>
+                <h3>WordPress Core</h3>
+                <p>Custom theme configuration, full site editing (FSE), security setups, aur dynamic dashboard architecture.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">⚡</div>
+                <h3>Elementor Pro</h3>
+                <p>Pixel-perfect custom landing pages layout design, dynamic loops, and high-converting modern structures.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">🛠️</div>
+                <h3>Custom Code</h3>
+                <p>Tweaking core styles using advanced CSS, neon design system integrations, and HTML/JS modifications.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">🛒</div>
+                <h3>WooCommerce</h3>
+                <p>Setting up full-scale, fast-loading, and responsive digital ecommerce storefronts with secure checkouts.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Gallery Section -->
+    <section class="container" id="portfolio">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="image-gallery">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 1">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 2">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 3">
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-logo">CREATED BY ABDUL SAMAD HUSSAIN BAIG</div>
+            <p class="footer-text">Let's build your next business website or custom WordPress interface. Fully optimized, insanely responsive, and engineered with premium aesthetic standards.</p>
+            
+            <ul class="footer-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="https://github.com" target="_blank">Github</a></li>
+                <li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li>
+            </ul>
+
+            <div class="copyright">
+                <p>&copy; 2026 WP.DEV | Engineered with Neon Cyberpunk Theme. All Rights Reserved. 🌌</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenu.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+
+        // Smooth Scrolling 
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+                navLinks.classList.remove('active');
+                mobileMenu.textContent = '☰';
+            });
+        });
+
+        // Sticky Header Effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 60) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
